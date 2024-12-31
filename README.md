@@ -1,66 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Travel Order
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Considerações
 
-## About Laravel
+- **Mailtip** foi utilizado para simular o envio de notificações por e-mail. Pode ser acessado localmente no endereço: [http://localhost:8025/](http://localhost:8025/).
+  
+- Foi criado um **serviço** para verificar se um pedido de viagem pode ser cancelado, incluindo as validações que julguei coerentes para essa operação.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Instruções para Iniciar o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Siga os passos abaixo para configurar o projeto:
 
-## Learning Laravel
+1. **Clone o repositório** para o diretório de sua preferência:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+   `git clone https://github.com/julesjrenck/travel_order.git`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. **Acesse o diretório do projeto**:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   `cd travel_order`
 
-## Laravel Sponsors
+3. **Instale as dependências do Laravel** usando o Composer:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   `composer install`
 
-### Premium Partners
+4. **Copie o arquivo `.env.example` para `.env`**:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+   `cp .env.example .env`
 
-## Contributing
+5. **Crie e inicie os containers Docker** com o comando:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   `docker-compose up -d`
 
-## Code of Conduct
+6. **Execute as migrations** para criar as tabelas no banco de dados:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   `docker-compose exec app php artisan migrate`
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Testes
 
-## License
+# Por Comando
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para rodar os testes via terminal, execute o seguinte comando: 
+
+`docker-compose exec app php artisan test`
+
+# Por Endpoint
+
+Rota: /register
+
+Método: POST
+
+Descrição: Registra um novo usuário no sistema e retorna um token.
+
+Payload de Exemplo: { "name": "John Doe", "email": "user@example.com", "password": "password123", "password_confirmation": "password123" }
+
+---
+
+Rota: /login
+
+Método: POST
+
+Descrição: Autentica o usuário e retorna um token JWT.
+
+Payload de Exemplo: { "email": "user@example.com", "password": "password123" }
+
+---
+
+# As rotas abaixo precisam do token
+
+
+Rota: /travel-orders
+
+Método: POST
+
+Descrição: Cria um novo pedido de viagem para o usuário autenticado.
+
+Payload de Exemplo: { "destination": "Paris", "start_date": "2025-01-01", "end_date": "2025-01-10" }
+
+---
+
+Rota: /travel-orders
+
+Método: GET
+
+Descrição: Retorna uma lista de pedidos de viagem filtrados pelo usuário autenticado.
+
+Query Parameters (opcional):
+
+status: Filtra pelo status do pedido (ex.: solicitado, aprovado, etc.).
+
+start_date e end_date: Filtra por intervalo de datas.
+
+destination: Filtra pelo destino.
+
+---
+
+Rota: /travel-orders/{id}
+
+Método: GET
+
+Descrição: Retorna os detalhes de um pedido de viagem específico.
+
+---
+
+Rota: /travel-orders/{id}
+
+Método: PUT ou PATCH
+
+Descrição: Atualiza o status de um pedido de viagem.
+
+Payload de Exemplo: { "status": "aprovado" }
+
+
