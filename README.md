@@ -48,7 +48,7 @@ Para rodar os testes via terminal, execute o seguinte comando:
 
 # Por Endpoint
 
-Rota: /register
+Rota: api/register
 
 Método: POST
 
@@ -58,7 +58,7 @@ Payload de Exemplo: { "name": "John Doe", "email": "user@example.com", "password
 
 ---
 
-Rota: /login
+Rota: api/login
 
 Método: POST
 
@@ -71,7 +71,7 @@ Payload de Exemplo: { "email": "user@example.com", "password": "password123" }
 # As rotas abaixo precisam do token
 
 
-Rota: /travel-orders
+Rota: api/travel-orders
 
 Método: POST
 
@@ -81,7 +81,7 @@ Payload de Exemplo: { "destination": "Paris", "start_date": "2025-01-01", "end_d
 
 ---
 
-Rota: /travel-orders
+Rota: api/travel-orders
 
 Método: GET
 
@@ -97,7 +97,7 @@ destination: Filtra pelo destino.
 
 ---
 
-Rota: /travel-orders/{id}
+Rota: api/travel-orders/{id}
 
 Método: GET
 
@@ -105,7 +105,7 @@ Descrição: Retorna os detalhes de um pedido de viagem específico.
 
 ---
 
-Rota: /travel-orders/{id}
+Rota: api/travel-orders/{id}
 
 Método: PUT ou PATCH
 
